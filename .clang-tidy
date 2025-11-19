@@ -1,0 +1,30 @@
+Checks: >
+  clang-analyzer-*,
+  bugprone-*,
+  modernize-*,
+  performance-*,
+  readability-*,
+  portability-*,
+  cppcoreguidelines-*,
+  hicpp-*,
+  -hicpp-no-array-decay,          # too strict
+  -cppcoreguidelines-avoid-magic-numbers, 
+  -cppcoreguidelines-owning-memory, 
+  -cppcoreguidelines-pro-type-reinterpret-cast
+
+WarningsAsErrors: ""
+
+HeaderFilterRegex: ".*"
+AnalyzeTemporaryDtors: false
+
+CheckOptions:
+  - key: modernize-use-nullptr.NullMacros
+    value: "NULL"
+  - key: modernize-use-auto.MinTypeNameLength
+    value: "5"
+  - key: readability-identifier-naming.VariableCase
+    value: camelBack
+  - key: readability-identifier-naming.FunctionCase
+    value: camelBack
+  - key: readability-identifier-naming.ClassCase
+    value: CamelCase
