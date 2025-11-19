@@ -1,3 +1,4 @@
+# .github/workflows/clang-tidy.yml
 name: Clang-Tidy
 
 on:
@@ -10,32 +11,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Required for some clang-tidy checks that use git history
 
-      - name: Install tools
+      - name: Install clang-tidy + libc++ (fixes <string> not found)
         run: |
           sudo apt-get update
-          sudo apt-get install -y clang-tidy cmake ninja-build
+          sudo apt-get install -y clang-tidy-18 clang-18 libc++-18-dev libc++abi-18-dev cmake ninja-build
 
       - name: Configure CMake
         run: |
           cmake -B build \
                 -G Ninja \
                 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-                -DCMAKE_BUILD_TYPE=Debug
+                -DCMAKE_BUILD_TYPE=Debug \
+                -DCMAKE_CXX_COMPILER=clang++-18
 
-      - name: Symlink compile_commands.json to root
-        run: ln -sf build/compile_commands.json .
+      - name: Link compile_commands.json to root
+        run: ln -s build/compile_commands.json .
 
       - name: Run clang-tidy
         run: |
-          # Run on all C++ files in src/, using compile_commands.json for context
-          # This respects your .clang-tidy config at root
-          # --warnings-as-errors=* fails the build on any warnings (remove if you want warnings only)
-          clang-tidy src/*.cpp src/*.h \
+          clang-tidy-18 src/*.cpp src/*.h \
             -p . \
+            --use-color \
             --warnings-as-errors=* \
-            --quiet \
-            -- \
-            $(find src -name "*.cpp" -o -name "*.h")
+            --header-filter=.* \
+            --
