@@ -1,3 +1,4 @@
+# .clang-tidy
 Checks: >
   clang-analyzer-*,
   bugprone-*,
@@ -7,15 +8,14 @@ Checks: >
   portability-*,
   cppcoreguidelines-*,
   hicpp-*,
-  -hicpp-no-array-decay,          # too strict
-  -cppcoreguidelines-avoid-magic-numbers, 
-  -cppcoreguidelines-owning-memory, 
+  -hicpp-no-array-decay,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -cppcoreguidelines-owning-memory,
   -cppcoreguidelines-pro-type-reinterpret-cast
 
-WarningsAsErrors: ""
+WarningsAsErrors: "*"
 
 HeaderFilterRegex: ".*"
-AnalyzeTemporaryDtors: false
 
 CheckOptions:
   - key: modernize-use-nullptr.NullMacros
