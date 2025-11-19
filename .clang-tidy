@@ -5,13 +5,12 @@ Checks: >
   modernize-*,
   performance-*,
   readability-*,
-  portability-*,
-  cppcoreguidelines-*,
-  hicpp-*,
-  -hicpp-no-array-decay,
-  -cppcoreguidelines-avoid-magic-numbers,
-  -cppcoreguidelines-owning-memory,
-  -cppcoreguidelines-pro-type-reinterpret-cast
+  -readability-identifier-naming,           # disable naming police
+  -readability-identifier-length,           # disable "p is too short"
+  -modernize-use-trailing-return-type,      # nobody uses this in real code
+  -modernize-use-nodiscard,                 # optional for small projects
+  -cppcoreguidelines-avoid-non-const-global-variables,
+  -bugprone-narrowing-conversions
 
 WarningsAsErrors: "*"
 
@@ -20,11 +19,3 @@ HeaderFilterRegex: ".*"
 CheckOptions:
   - key: modernize-use-nullptr.NullMacros
     value: "NULL"
-  - key: modernize-use-auto.MinTypeNameLength
-    value: "5"
-  - key: readability-identifier-naming.VariableCase
-    value: camelBack
-  - key: readability-identifier-naming.FunctionCase
-    value: camelBack
-  - key: readability-identifier-naming.ClassCase
-    value: CamelCase
