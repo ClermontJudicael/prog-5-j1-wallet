@@ -12,27 +12,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install clang-tidy + libc++ (fixes <string> not found)
+      - name: Install tools (use regular g++ headers, not libc++)
         run: |
           sudo apt-get update
-          sudo apt-get install -y clang-tidy-18 clang-18 libc++-18-dev libc++abi-18-dev cmake ninja-build
+          sudo apt-get install -y clang-tidy-18 clang-18 g++ cmake ninja-build
 
-      - name: Configure CMake
+      - name: Configure CMake with clang++ (but standard headers from g++)
         run: |
           cmake -B build \
                 -G Ninja \
                 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-                -DCMAKE_BUILD_TYPE=Debug \
-                -DCMAKE_CXX_COMPILER=clang++-18
+                -DCMAKE_CXX_COMPILER=clang++-18 \
+                -DCMAKE_CXX_FLAGS="-stdlib=libstdc++"
 
-      - name: Link compile_commands.json to root
+      - name: Symlink compile_commands.json
         run: ln -s build/compile_commands.json .
 
       - name: Run clang-tidy
         run: |
           clang-tidy-18 src/*.cpp src/*.h \
             -p . \
-            --use-color \
             --warnings-as-errors=* \
-            --header-filter=.* \
-            --
+            --quiet
