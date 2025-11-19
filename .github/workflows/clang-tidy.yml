@@ -11,18 +11,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # Required for some clang-tidy checks that use git history
 
       - name: Install tools
-        run: sudo apt-get update && sudo apt-get install -y clang-tidy cmake ninja-build
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-tidy cmake ninja-build
 
-      - name: CMake configure
-        run: cmake -B build -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+      - name: Configure CMake
+        run: |
+          cmake -B build \
+                -G Ninja \
+                -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+                -DCMAKE_BUILD_TYPE=Debug
 
-      - name: Symlink compile_commands.json
+      - name: Symlink compile_commands.json to root
         run: ln -sf build/compile_commands.json .
 
       - name: Run clang-tidy
-        uses: HorstBaerbel/clang-tidy-action@v2
-        with:
-          warnings_as_errors: true
+        run: |
+          # Run on all C++ files in src/, using compile_commands.json for context
+          # This respects your .clang-tidy config at root
+          # --warnings-as-errors=* fails the build on any warnings (remove if you want warnings only)
+          clang-tidy src/*.cpp src/*.h \
+            -p . \
+            --warnings-as-errors=* \
+            --quiet \
+            -- \
+            $(find src -name "*.cpp" -o -name "*.h")
