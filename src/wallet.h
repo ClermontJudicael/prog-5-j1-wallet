@@ -6,8 +6,8 @@
 class Portefeuille
 {
 public:
-    Portefeuille(std::string c, std::string m, float p = 0.0)
-        : couleur(std::move(c)), marque(std::move(m)), poids(p) {}
+    Portefeuille(std::string couleur, std::string marque, float poids = 0.0)
+        : couleur(std::move(couleur)), marque(std::move(marque)), poids(poids) {}
 
     float getMoney() const
     {

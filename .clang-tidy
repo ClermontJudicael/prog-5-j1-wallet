@@ -1,16 +1,9 @@
 # .clang-tidy
-Checks: >
-  clang-analyzer-*,
-  bugprone-*,
-  modernize-*,
-  performance-*,
-  readability-*,
-  -readability-identifier-naming,           # disable naming police
-  -readability-identifier-length,           # disable "p is too short"
-  -modernize-use-trailing-return-type,      # nobody uses this in real code
-  -modernize-use-nodiscard,                 # optional for small projects
+Checks: "clang-analyzer-*,bugprone-*,modernize-*,performance-*,readability-*,
+  -readability-identifier-naming,-readability-identifier-length,
+  -modernize-use-trailing-return-type,-modernize-use-nodiscard,
   -cppcoreguidelines-avoid-non-const-global-variables,
-  -bugprone-narrowing-conversions
+  -bugprone-narrowing-conversions"
 
 WarningsAsErrors: "*"
 

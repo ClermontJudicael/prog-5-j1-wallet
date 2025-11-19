@@ -2,6 +2,6 @@
 
 int main()
 {
-    Portefeuille p {"brown", "bovis", 1};
-    p.lost();
+    Portefeuille porteFeuille {"brown", "bovis", 1};
+    porteFeuille.lost();
 }
